@@ -1,0 +1,246 @@
+/* ==========================================
+   1. VARIÁVEIS DE CORES E RESET BASE
+   ========================================== */
+:root {
+  --vermelho-neon: #ff003c;
+  --vermelho-brilho: #ff3366;
+  --fundo-dark: #0a0a0c;
+  --card-fundo: rgba(18, 18, 22, 0.75); /* Transparência para exibir as partículas no fundo */
+  --texto-principal: #ffffff;
+  --texto-secundario: #cccccc;
+  --borda-glow: 0 0 15px rgba(255, 0, 60, 0.6);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--fundo-dark);
+  color: var(--texto-principal);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  min-height: 100vh;
+  position: relative;
+}
+
+/* ==========================================
+   2. CANVAS DE PARTÍCULAS (FUNDO INTERATIVO)
+   ========================================== */
+#canvas-particulas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  pointer-events: auto;
+}
+
+/* ==========================================
+   3. BARRA DE PROGRESSO DE LEITURA NEON
+   ========================================== */
+#progresso-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 5px;
+  background: transparent;
+  z-index: 1000;
+}
+
+#progresso-barra {
+  height: 100%;
+  width: 0%;
+  background: var(--vermelho-neon);
+  box-shadow: 0 0 10px var(--vermelho-neon), 0 0 20px var(--vermelho-brilho);
+  transition: width 0.1s ease-out;
+}
+
+/* ==========================================
+   4. ANIMAÇÕES
+   ========================================== */
+@keyframes flutuar {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-8px); }
+  100% { transform: translateY(0px); }
+}
+
+@keyframes pulsar {
+  0% { box-shadow: 0 0 10px var(--vermelho-neon); }
+  50% { box-shadow: 0 0 25px var(--vermelho-neon), 0 0 35px #ffffff; }
+  100% { box-shadow: 0 0 10px var(--vermelho-neon); }
+}
+
+/* ==========================================
+   5. CABEÇALHO
+   ========================================== */
+header {
+  background: var(--card-fundo);
+  backdrop-filter: blur(10px);
+  border: 2px solid var(--vermelho-neon);
+  border-radius: 20px;
+  padding: 25px;
+  width: 100%;
+  max-width: 850px;
+  text-align: center;
+  box-shadow: var(--borda-glow);
+  margin-top: 20px;
+  margin-bottom: 30px;
+  animation: flutuar 4s ease-in-out infinite;
+}
+
+header h1 {
+  color: #ffffff;
+  text-shadow: 0 0 10px var(--vermelho-neon), 0 0 20px var(--vermelho-neon);
+  font-size: 2.3rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+header p {
+  color: var(--texto-secundario);
+  font-weight: 500;
+  margin-top: 8px;
+  font-size: 1.1rem;
+}
+
+/* ==========================================
+   6. CONTEÚDO PRINCIPAL (ARTIGOS)
+   ========================================== */
+main {
+  width: 100%;
+  max-width: 850px;
+}
+
+article {
+  background: var(--card-fundo);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 0, 60, 0.4);
+  border-radius: 20px;
+  padding: 30px;
+  margin-bottom: 25px;
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
+  transition: border-color 0.3s, transform 0.3s;
+}
+
+article:hover {
+  border-color: var(--vermelho-neon);
+  transform: translateY(-3px);
+}
+
+h2 {
+  color: #ffffff;
+  margin-bottom: 15px;
+  font-size: 1.6rem;
+  border-bottom: 2px solid var(--vermelho-neon);
+  padding-bottom: 8px;
+  display: inline-block;
+}
+
+p {
+  line-height: 1.8;
+  margin-bottom: 15px;
+  color: var(--texto-secundario);
+  font-size: 1.05rem;
+}
+
+/* ==========================================
+   7. INTERAÇÃO E BOTÃO DE LIKES
+   ========================================== */
+.interacao {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 25px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.btn-like {
+  background: transparent;
+  color: #ffffff;
+  border: 2px solid var(--vermelho-neon);
+  padding: 12px 25px;
+  font-size: 1rem;
+  font-weight: bold;
+  border-radius: 50px;
+  cursor: pointer;
+  box-shadow: 0 0 10px var(--vermelho-neon);
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.btn-like:hover {
+  background: var(--vermelho-neon);
+  color: #ffffff;
+  box-shadow: 0 0 20px var(--vermelho-neon);
+}
+
+.contador {
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: #ffffff;
+  background: rgba(255, 0, 60, 0.15);
+  padding: 10px 20px;
+  border-radius: 15px;
+  border: 1px solid var(--vermelho-neon);
+}
+
+/* ==========================================
+   8. BOTÃO FLUTUANTE "VOLTAR AO TOPO"
+   ========================================== */
+#btn-topo {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  width: 55px;
+  height: 55px;
+  background-color: var(--fundo-dark);
+  border: 2px solid var(--vermelho-neon);
+  border-radius: 50%;
+  color: #ffffff;
+  font-size: 1.5rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 15px var(--vermelho-neon);
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.4s ease;
+  z-index: 99;
+}
+
+#btn-topo.visivel {
+  opacity: 1;
+  visibility: visible;
+}
+
+#btn-topo:hover {
+  background-color: var(--vermelho-neon);
+  transform: scale(1.1);
+}
+
+/* ==========================================
+   9. RODAPÉ
+   ========================================== */
+footer {
+  margin-top: 50px;
+  padding: 20px;
+  text-align: center;
+  color: var(--texto-secundario);
+  font-weight: 500;
+}
